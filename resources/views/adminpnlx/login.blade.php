@@ -1,14 +1,10 @@
-<?php
-// You can put your nonce_value.
-// nonce_value means any random set of characters which helps to send and receive the valid HTTP request
-$nonceValue = 'zzBBQ!aGGoeMsdgsdgdos@oQz*E';
-   ?>
+<?php $nonceValue = 'zzBBQ!aGGoeMsdgsdgdos@oQz*E'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <title><?php echo $PageTitle ?></title>
+    <title>Swinton House</title>
     <meta name="description" content="Datatable HTML table" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="canonical" href="" />
@@ -135,8 +131,8 @@ $nonceValue = 'zzBBQ!aGGoeMsdgsdgdos@oQz*E';
         }
 
         .row.align-items-center {
-                padding: 10px;
-            }
+            padding: 10px;
+        }
 
         .login-signin.new-logn-page .tp-loog a {
             width: 290px;
@@ -246,16 +242,16 @@ $nonceValue = 'zzBBQ!aGGoeMsdgsdgdos@oQz*E';
                             </div>
                             <h3>Login to your account</h3>
                         </div>
-                        <form action="" method="post" id="form1">
+                        <form action="{{ Route('Admin.logins') }}" method="post" id="login_form">
                             <div class="row align-items-center">
                                 @csrf()
                                 <div class="col-lg-12 col-xl-12">
                                     <div class="row align-items-center">
                                         <div class="col-md-12 my-2">
-                                            <input type="email" name="username"
-                                                class="custom-form-control @error('username') is-invalid @enderror"
-                                                value="{{ old('username') }}" placeholder="Email Address">
-                                            @error('username')
+                                            <input type="email" name="email"
+                                                class="custom-form-control @error('email') is-invalid @enderror"
+                                                value="{{ old('email') }}" placeholder="Email Address">
+                                            @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -263,12 +259,12 @@ $nonceValue = 'zzBBQ!aGGoeMsdgsdgdos@oQz*E';
                                         </div>
                                         <div class="col-md-12 my-2">
                                             <input type="password" name="password" id="password"
-                                                class="custom-form-control @error('username') is-invalid @enderror"
+                                                class="custom-form-control @error('password') is-invalid @enderror"
                                                 placeholder="Enter Password" minlength="6">
-                                                <span onclick="togglePassword()" 
-                                                    style="position:absolute; right:40px; top:75%; transform:translateY(-50%); cursor:pointer;">
-                                                    <i class="fas fa-eye"></i>
-                                                </span>
+                                            <span onclick="togglePassword()"
+                                                style="position:absolute; right:40px; top:75%; transform:translateY(-50%); cursor:pointer;">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -320,8 +316,8 @@ $nonceValue = 'zzBBQ!aGGoeMsdgsdgdos@oQz*E';
             return true;
         }
         $(document).ready(function () {
-            $("#form1").submit(function (event) {
-                var email = $("#username").val();
+            $("#login_form").submit(function (event) {
+                var email = $("#email").val();
                 var password = $("#password").val();
                 var nonceValue = "<?php echo $nonceValue; ?>";
                 let encryption = new Encryption();

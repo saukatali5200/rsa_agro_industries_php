@@ -1,36 +1,12 @@
-@include('/adminpnlx/common/header')
+@extends('adminpnlx.layouts.layout')
+@section('content')
 
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="d-flex flex-column-fluid">
 		<div class="container-fluid">
 			<div class="company-change-btn">
 				<div class="row">
-					<div class="col-md-4">
-						<div class="inner-content">
-							<h4>Current Outlet</h4>
-							<div class="user-img-new">
-								<?php $user = Session::get('admin_userdata');  ?>
-								<div class="symbol symbol-100 mr-5">
-
-									<?php if (isset($user->user_image) && $user->user_image != '') { ?>
-									<div class="symbol-label"
-										style="background-image:url('<?php echo url('/public/uploads/employees/') . '/' . $user->user_image;?>')">
-									</div>
-									<?php } else { ?>
-									<div class="symbol-label"
-										style="background-image:url('assets/media/users/300_21.jpg')"></div>
-									<?php }?>
-								</div>
-							</div>
-							<p>test</p>
-
-							<a id="openCompanySwitchModal"
-								class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Switch Outlet</a>
-						</div>
-					</div>
-
-					<div class="col-md-8">
-
+					<div class="col-md-12">
 						<div class="new-bottom-dashbord-box">
 							<div class="row">
 								<div class="col-md-4">
@@ -96,4 +72,5 @@
 		</div>
 	</div>
 </div>
-@include('/adminpnlx/common/footer')
+
+@endsection

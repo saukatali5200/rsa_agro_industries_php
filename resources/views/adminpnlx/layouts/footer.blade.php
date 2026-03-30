@@ -29,10 +29,11 @@
 					type: "POST",
 					data: { id: id },
 					success: function (response) {
+						console.log('response', response.message)
 
 						Swal.fire({
 							icon: "success",
-							title: "Deleted Successfully",
+							title: response.message,
 							showConfirmButton: false,
 							timer: 1500
 						});

@@ -45,7 +45,7 @@ class CategoryController extends Controller
         foreach ($results as $result) {
 
             $action = '';
-            $action .= '<a href="' . route('Category.edit', $result->id) . '" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">
+            $action .= '<a href="' . route($this->modalName .'.edit', $result->id) . '" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">
                         <span class="svg-icon svg-icon-md">                                
                             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
                                 <g fill="none">
@@ -63,7 +63,7 @@ class CategoryController extends Controller
                     </a>';
 
             $action .= '<a href="javascript:;" class="btn btn-sm btn-clean btn-icon deleteItem" title="Delete" 
-                data-url="' . route('Category.delete') . '"  data-id="' . $result->id . '">
+                data-url="' . route($this->modalName .'.delete') . '"  data-id="' . $result->id . '">
                 <span class="svg-icon svg-icon-md">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -134,13 +134,14 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $rules = array(
-            'name' => [
-                'required'
-            ],
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required',
+            ]
         );
 
-        $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         } else {
@@ -148,7 +149,7 @@ class CategoryController extends Controller
             $obj->name = $request->input('name');
             $obj->description = $request->input('description');
             $obj->save();
-            return redirect()->route($this->modalName . '.index')->with('success', trans('New Category Added Successfully.'))->send();
+            return redirect()->route($this->modalName . '.index')->with('success', trans('New Category Added Successfully.'));
         }
     }
 
@@ -163,16 +164,14 @@ class CategoryController extends Controller
     {
         $formData = $request->all();
         $Category = Category::where('id', $id)->first();
-        $rules = array(
-            'name' => [
-                'required'
-            ],
-        );
 
         $validator = Validator::make(
             $request->all(),
-            $rules
+            [
+                'name' => 'required',
+            ]
         );
+
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
 
