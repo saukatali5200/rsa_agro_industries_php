@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\View;
 class CategoryController extends Controller
 {
 
-    public $modalName = "Category";
+    public $modelName = "Category";
     public $sectionName = "Category";
     public function __construct(){
-        View::share('modalName', $this->modalName);
+        View::share('modelName', $this->modelName);
         View::share('sectionName', $this->sectionName);
     }
     public function index()
     {
-        return view('adminpnlx.' . $this->modalName . '.index');
+        return view('adminpnlx.' . $this->modelName . '.index');
     }
 
     public function resultData(Request $request)
@@ -43,9 +43,8 @@ class CategoryController extends Controller
         $data = [];
         $sno = $start + 1;
         foreach ($results as $result) {
-
             $action = '';
-            $action .= '<a href="' . route($this->modalName .'.edit', $result->id) . '" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">
+            $action .= '<a href="' . route($this->modelName .'.edit', $result->id) . '" class="btn btn-sm btn-clean btn-icon mr-2" title="Edit details">
                         <span class="svg-icon svg-icon-md">                                
                             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
                                 <g fill="none">
@@ -63,7 +62,7 @@ class CategoryController extends Controller
                     </a>';
 
             $action .= '<a href="javascript:;" class="btn btn-sm btn-clean btn-icon deleteItem" title="Delete" 
-                data-url="' . route($this->modalName .'.delete') . '"  data-id="' . $result->id . '">
+                data-url="' . route($this->modelName .'.delete') . '"  data-id="' . $result->id . '">
                 <span class="svg-icon svg-icon-md">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -94,19 +93,16 @@ class CategoryController extends Controller
     private function resultDataModal($request, $limit, $start, $order, $dir, $search)
     {
         $name = $request->name ?? '';
-        $query = DB::table('categories')
-            ->leftJoin('users', 'users.id', '=', 'categories.added_by')
-            ->select('categories.*', 'users.name as user_name')
-            ->where('categories.status', 1);
+        $query = Category::where('categories.is_deleted', 0);
 
         if (!empty($name)) {
-            $query->where('categories.id', $name);
+            $query->where('categories.name', $name);
         }
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('categories.name', 'LIKE', "%{$search}%")
-                    ->orWhere('users.name', 'LIKE', "%{$search}%");
+                    ->orWhere('categories.name', 'LIKE', "%{$search}%");
             });
         }
 
@@ -129,12 +125,11 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('adminpnlx.' . $this->modalName . '.add');
+        return view('adminpnlx.' . $this->modelName . '.add');
     }
 
     public function store(Request $request)
     {
-
         $validator = Validator::make(
             $request->all(),
             [
@@ -149,21 +144,21 @@ class CategoryController extends Controller
             $obj->name = $request->input('name');
             $obj->description = $request->input('description');
             $obj->save();
-            return redirect()->route($this->modalName . '.index')->with('success', trans('New Category Added Successfully.'));
+            return redirect()->route($this->modelName . '.index')->with('success', $this->sectionName .' Added Successfully.');
         }
     }
 
 
     public function edit(Request $request, $id)
     {
-        $modalDetail = Category::where('id', $id)->get()->toArray();
-        return view('adminpnlx.' . $this->modalName . '.edit', compact('modalDetail'));
+        $modalDetail = Category::where('id', $id)->first();
+        return view('adminpnlx.' . $this->modelName . '.edit', compact('modalDetail'));
     }
 
     public function update(Request $request, $id)
     {
         $formData = $request->all();
-        $Category = Category::where('id', $id)->first();
+        $modelDetail = Category::where('id', $id)->first();
 
         $validator = Validator::make(
             $request->all(),
@@ -177,12 +172,12 @@ class CategoryController extends Controller
 
         } else {
 
-            $obj = $Category;
+            $obj = $modelDetail;
             $obj->name = $request->input('name');
             $obj->description = $request->input('description');
             $obj->save();
 
-            return redirect()->route($this->modalName . '.index')->with('success', trans('Category Updated Successfully.'));
+            return redirect()->route($this->modelName . '.index')->with('success', $this->sectionName .' Updated Successfully.');
         }
     }
 
@@ -190,17 +185,17 @@ class CategoryController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
-        $category = Category::find($id);
-        if (!$category) {
+        $modelDetail = Category::find($id);
+        if (!$modelDetail) {
             return response()->json([
                 'status' => false,
-                'message' => 'Category not found'
+                'message' => 'Record not found'
             ], 404);
         }
-        $category->delete();
+        $modelDetail->delete();
         return response()->json([
             'status' => true,
-            'message' => 'Category deleted successfully'
+            'message' => $this->sectionName .' Deleted successfully'
         ]);
     }
 

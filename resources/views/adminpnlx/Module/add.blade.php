@@ -12,7 +12,7 @@
 						<a href="{{ Route($modelName .'.index') }}">{{$sectionName}}</a>
 					</li>
 					<li class="breadcrumb-item active">
-						Edit {{$sectionName}}
+						Add {{$sectionName}}
 					</li>
 				</ol>
 			</nav>
@@ -30,20 +30,69 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
-						<form action="{{ route($modelName . '.update', $modalDetail->id) }}" method="POST" enctype="multipart/form-data">
+						<form action="{{ Route($modelName .'.store') }}" method="post" enctype="multipart/form-data">
 							@csrf()
 							<div class="card card-custom gutter-b example example-compact">
 
 								<div class="card-body">
 									<div class="row">
+
+									    <div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="parent_id"> Parent </label>
+												<select name="parent_id" class="form-control @error('parent_id') is-invalid @enderror">
+													<option value="">Select Parent</option>
+													@if ($module_lists)
+													  @foreach ($module_lists as $parent)
+													  <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+													  @endforeach
+													@endif
+												</select>
+												@error('parent_id')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+
 										<div class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="name"> Name <span class="text-danger">*</span>
 												</label>
 												<input type="text" name="name"
 													class="form-control @error('name') is-invalid @enderror"
-													placeholder="Name" value="{{ old('name', $modalDetail->name ?? '') }}">
+													placeholder="Enter Name" value="{{ old('name') }}">
 												@error('name')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="route"> Url <span class="text-danger">*</span>
+												</label>
+												<input type="text" name="route"
+													class="form-control @error('route') is-invalid @enderror"
+													placeholder="Enter Url" value="{{ old('route') }}">
+												@error('route')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="icon"> Icon <span class="text-danger">*</span>
+												</label>
+												<input type="file" name="icon"
+													class="form-control @error('icon') is-invalid @enderror">
+												@error('icon')
 													<span class="invalid-feedback" role="alert">
 														<strong>{{ $message }}</strong>
 													</span>
@@ -56,7 +105,8 @@
 												<label class="status">Description </label>
 												<textarea name="description"
 													class="form-control @error('description') is-invalid @enderror"
-													placeholder="Description" rows="3">{{ old('description', $modalDetail->description ?? '') }}</textarea>
+													placeholder="Description" value="{{ old('description') }}"
+													rows="3"></textarea>
 											</div>
 										</div>
 									</div>

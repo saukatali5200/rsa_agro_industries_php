@@ -31,6 +31,38 @@ Route::prefix('adminpnlx')->group(function () {
         Route::post('admins/delete', [App\Http\Controllers\Adminpnlx\AdminController::class, 'delete'])->name('Admin.delete');
         Route::get('admins/status/{id}', [App\Http\Controllers\Adminpnlx\AdminController::class, 'status'])->name('Admin.status');
 
+        Route::get('roles', [App\Http\Controllers\Adminpnlx\RoleController::class, 'index'])->name('Role.index');
+        Route::get('roles-result', [App\Http\Controllers\Adminpnlx\RoleController::class, 'resultData'])->name('Role.resultData');
+        Route::get('roles/create', [App\Http\Controllers\Adminpnlx\RoleController::class, 'create'])->name('Role.create');
+        Route::post('roles/store', [App\Http\Controllers\Adminpnlx\RoleController::class, 'store'])->name('Role.store');
+        Route::get('roles/show/{id}', [App\Http\Controllers\Adminpnlx\RoleController::class, 'show'])->name('Role.show');
+        Route::get('roles/edit/{id}', [App\Http\Controllers\Adminpnlx\RoleController::class, 'edit'])->name('Role.edit');
+        Route::post('roles/update/{id}', [App\Http\Controllers\Adminpnlx\RoleController::class, 'update'])->name('Role.update');
+        Route::post('roles/delete', [App\Http\Controllers\Adminpnlx\RoleController::class, 'delete'])->name('Role.delete');
+        Route::get('roles/status/{id}', [App\Http\Controllers\Adminpnlx\RoleController::class, 'status'])->name('Role.status');
+        Route::get('roles/assign/{id}', [App\Http\Controllers\Adminpnlx\RoleController::class, 'assign'])->name('Role.assign');
+        Route::post('roles/assign-permission', [App\Http\Controllers\Adminpnlx\RoleController::class, 'assignPermission'])->name('Role.assignPermission');
+
+        Route::get('modules', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'index'])->name('Module.index');
+        Route::get('modules-result', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'resultData'])->name('Module.resultData');
+        Route::get('modules/create', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'create'])->name('Module.create');
+        Route::post('modules/store', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'store'])->name('Module.store');
+        Route::get('modules/show/{id}', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'show'])->name('Module.show');
+        Route::get('modules/edit/{id}', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'edit'])->name('Module.edit');
+        Route::post('modules/update/{id}', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'update'])->name('Module.update');
+        Route::post('modules/delete', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'delete'])->name('Module.delete');
+        Route::get('modules/status/{id}', [App\Http\Controllers\Adminpnlx\ModuleController::class, 'status'])->name('Module.status');
+
+        Route::get('product', [App\Http\Controllers\Adminpnlx\ProductController::class, 'index'])->name('Product.index');
+        Route::get('product-result', [App\Http\Controllers\Adminpnlx\ProductController::class, 'resultData'])->name('Product.resultData');
+        Route::get('product/create', [App\Http\Controllers\Adminpnlx\ProductController::class, 'create'])->name('Product.create');
+        Route::post('product/store', [App\Http\Controllers\Adminpnlx\ProductController::class, 'store'])->name('Product.store');
+        Route::get('product/show/{id}', [App\Http\Controllers\Adminpnlx\ProductController::class, 'show'])->name('Product.show');
+        Route::get('product/edit/{id}', [App\Http\Controllers\Adminpnlx\ProductController::class, 'edit'])->name('Product.edit');
+        Route::post('product/update/{id}', [App\Http\Controllers\Adminpnlx\ProductController::class, 'update'])->name('Product.update');
+        Route::post('product/delete', [App\Http\Controllers\Adminpnlx\ProductController::class, 'delete'])->name('Product.delete');
+        Route::get('product/status/{id}', [App\Http\Controllers\Adminpnlx\ProductController::class, 'status'])->name('Product.status');
+
         Route::get('category', [App\Http\Controllers\Adminpnlx\CategoryController::class, 'index'])->name('Category.index');
         Route::get('category-result', [App\Http\Controllers\Adminpnlx\CategoryController::class, 'resultData'])->name('Category.resultData');
         Route::get('category/create', [App\Http\Controllers\Adminpnlx\CategoryController::class, 'create'])->name('Category.create');
@@ -40,8 +72,6 @@ Route::prefix('adminpnlx')->group(function () {
         Route::post('category/update/{id}', [App\Http\Controllers\Adminpnlx\CategoryController::class, 'update'])->name('Category.update');
         Route::post('category/delete', [App\Http\Controllers\Adminpnlx\CategoryController::class, 'delete'])->name('Category.delete');
         Route::get('category/status/{id}', [App\Http\Controllers\Adminpnlx\CategoryController::class, 'status'])->name('Category.status');
-
-        Route::get('product', [App\Http\Controllers\Adminpnlx\ProductController::class, 'index'])->name('Product.index');
 
     });
 });

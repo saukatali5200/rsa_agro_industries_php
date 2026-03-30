@@ -8,13 +8,13 @@
 					<a href="{{ Route('Admin.Dashboard') }}">Dashboard</a>
 				</li>
 				<li class="breadcrumb-item active">
-					Category
+					{{$sectionName}}
 				</li>
 			</ol>
 		</nav>
 		<div class="d-flex align-items-center">
-				<a href="{{ route('Category.create') }}" class="btn btn-primary">
-					Add Category
+				<a href="{{ route( $modelName .'.create') }}" class="btn btn-primary">
+					Add {{$sectionName}}
 				</a>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 								@csrf()
 								<div class="row">
 									<div class="col-lg-3 col-md-6 col-sm-12">
-										<label class="col-form-label">Payment Type </label>
+										<label class="col-form-label">Name </label>
 										<select class="form-control" name="payment_mode" id="payment_mode">
 											<option value="">All</option>
 											<option value="Cash">Cash</option>
@@ -84,11 +84,11 @@
 		</div>
 	</div>
 </div>
-<!--end::Content-->
 
 <script type="text/javascript">
+	var kt_datatable_zero_configuration;
 	$(document).ready(function () {
-		var kt_datatable_zero_configuration = $('#kt_datatable_zero_configuration').DataTable({
+		 kt_datatable_zero_configuration = $('#kt_datatable_zero_configuration').DataTable({
 			processing: true,
 			serverSide: true,
 			ordering: true,
@@ -102,7 +102,8 @@
 			lengthChange: true,
 			dom: 'Blfrtip',
 			ajax: {
-				url: "{{ route('Category.resultData') }}",
+				url: "{{ route($modelName .'.resultData') }}",
+				cache: false,
 				data: function (d) {
 					d.name = $('#name').val();
 					d.start_date = $('#start_date').val();
@@ -119,61 +120,13 @@
 		// 🔥 Prevent form refresh
 		$('#category_form').on('submit', function (e) {
 			e.preventDefault();
-			kt_datatable_zero_configurationss.ajax.reload();
+			kt_datatable_zero_configuration.ajax.reload();
 		});
 
 		$('#category_form').on('reset', function () {
 			setTimeout(function () {
-				kt_datatable_zero_configurationss.ajax.reload();
+				kt_datatable_zero_configuration.ajax.reload();
 			}, 200);
-		});
-	});
-
-	$(document).on("click", ".deleteItem", function () {
-		let id = $(this).data("id");
-		let url = $(this).data("url");
-		Swal.fire({
-			title: "Are you sure?",
-			text: "This record will be deleted!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonText: "Yes, delete it!",
-			cancelButtonText: "Cancel"
-		}).then((result) => {
-			if (result.isConfirmed) {
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					}
-				});
-				$.ajax({
-					url: url,
-					type: "POST",
-					data: { id: id },
-					success: function (response) {
-
-						Swal.fire({
-							icon: "success",
-							title: "Deleted Successfully",
-							showConfirmButton: false,
-							timer: 1500
-						});
-
-						setTimeout(function () {
-							location.reload();
-						}, 1500);
-					}
-				});
-			}
-			else if (result.dismiss === Swal.DismissReason.cancel) {
-				Swal.fire({
-					icon: "error",
-					title: "Cancelled",
-					text: "Your data is safe 🙂",
-					showConfirmButton: false,
-					timer: 1000
-				});
-			}
 		});
 	});
 </script>

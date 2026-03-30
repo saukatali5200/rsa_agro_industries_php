@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Adminpnlx;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\Module;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
-class AdminController extends Controller
+class ModuleController extends Controller
 {
 
-    public $modelName = "Admin";
-    public $sectionName = "Staff";
+    public $modelName = "Module";
+    public $sectionName = "Module";
     public function __construct(){
         View::share('modelName', $this->modelName);
         View::share('sectionName', $this->sectionName);
@@ -93,16 +92,16 @@ class AdminController extends Controller
     private function resultDataModal($request, $limit, $start, $order, $dir, $search)
     {
         $name = $request->name ?? '';
-        $query = Admin::where('admins.is_deleted', 0);
+        $query = Module::where('modules.is_deleted', 0);
 
         if (!empty($name)) {
-            $query->where('admins.name', $name);
+            $query->where('modules.name', $name);
         }
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('categories.name', 'LIKE', "%{$search}%")
-                    ->orWhere('admins.name', 'LIKE', "%{$search}%");
+                    ->orWhere('modules.name', 'LIKE', "%{$search}%");
             });
         }
 
@@ -125,7 +124,8 @@ class AdminController extends Controller
 
     public function create()
     {
-        return view('adminpnlx.' . $this->modelName . '.add');
+        $module_lists = Module::get();
+        return view('adminpnlx.' . $this->modelName . '.add', compact('module_lists'));
     }
 
     public function store(Request $request)
@@ -134,16 +134,18 @@ class AdminController extends Controller
             $request->all(),
             [
                 'name' => 'required',
+                'route' => 'required',
             ]
         );
 
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         } else {
-            $obj = new Admin();
+            $obj = new Module();
+            $obj->parent_id = $request->input('parent_id');
             $obj->name = $request->input('name');
-            $obj->email = $request->input('email');
-            $obj->password = $request->input('password');
+            $obj->route = $request->input('route');
+            $obj->icon = $request->input('icon');
             $obj->description = $request->input('description');
             $obj->save();
             return redirect()->route($this->modelName . '.index')->with('success', $this->sectionName .' Added Successfully.');
@@ -153,14 +155,15 @@ class AdminController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $modalDetail = Admin::where('id', $id)->first();
-        return view('adminpnlx.' . $this->modelName . '.edit', compact('modalDetail'));
+        $modalDetail = Module::where('id', $id)->first();
+        $module_lists = Module::get();
+        return view('adminpnlx.' . $this->modelName . '.edit', compact('modalDetail', 'module_lists'));
     }
 
     public function update(Request $request, $id)
     {
         $formData = $request->all();
-        $modelDetail = Admin::where('id', $id)->first();
+        $modelDetail = Module::where('id', $id)->first();
 
         $validator = Validator::make(
             $request->all(),
@@ -175,9 +178,10 @@ class AdminController extends Controller
         } else {
 
             $obj = $modelDetail;
+            $obj->parent_id = $request->input('parent_id');
             $obj->name = $request->input('name');
-            $obj->email = $request->input('email');
-            $obj->password = $request->input('password');
+            $obj->route = $request->input('route');
+            $obj->icon = $request->input('icon');
             $obj->description = $request->input('description');
             $obj->save();
 
@@ -189,17 +193,17 @@ class AdminController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
-        $modelDetail = Admin::find($id);
+        $modelDetail = Module::find($id);
         if (!$modelDetail) {
             return response()->json([
                 'status' => false,
-                'message' => 'Admin not found'
+                'message' => 'Record not found'
             ], 404);
         }
         $modelDetail->delete();
         return response()->json([
             'status' => true,
-            'message' => $this->sectionName .' Deleted successfully'
+            'message' => $this->sectionName .' Deleted Successfully'
         ]);
     }
 

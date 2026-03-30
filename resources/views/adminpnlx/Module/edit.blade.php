@@ -36,6 +36,26 @@
 
 								<div class="card-body">
 									<div class="row">
+
+									    <div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="parent_id"> Parent </label>
+												<select name="parent_id" class="form-control @error('parent_id') is-invalid @enderror">
+													<option value="">Select Parent</option>
+													@if ($module_lists)
+													  @foreach ($module_lists as $parent)
+													  <option value="{{ $parent->id }}" {{ $parent->id == $modalDetail->parent_id ? 'selected' : '' }}>{{ $parent->name }}</option>
+													  @endforeach
+													@endif
+												</select>
+												@error('parent_id')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+										
 										<div class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="name"> Name <span class="text-danger">*</span>
@@ -44,6 +64,35 @@
 													class="form-control @error('name') is-invalid @enderror"
 													placeholder="Name" value="{{ old('name', $modalDetail->name ?? '') }}">
 												@error('name')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="route"> Url  <span class="text-danger">*</span>
+												</label>
+												<input type="text" name="route"
+													class="form-control @error('route') is-invalid @enderror"
+													placeholder="Url" value="{{ old('route', $modalDetail->route ?? '') }}">
+												@error('route')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="icon"> Icon <span class="text-danger">*</span>
+												</label>
+												<input type="file" name="icon"
+													class="form-control @error('icon') is-invalid @enderror">
+												@error('icon')
 													<span class="invalid-feedback" role="alert">
 														<strong>{{ $message }}</strong>
 													</span>

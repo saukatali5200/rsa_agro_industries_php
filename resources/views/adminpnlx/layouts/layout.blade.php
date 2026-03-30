@@ -38,13 +38,9 @@
             float: right;
         }
 
-        div#kt_datatable_zero_configurationss_length {
+        div#kt_datatable_zero_configuration_length {
             float: inline-end;
             margin-left: 10px;
-        }
-
-        div#kt_datatable_zero_configurationss_filter {
-            float: inline-end;
         }
 
         .aside-minimize:not(.aside-minimize-hover) .aside .max-h-100px {

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('parent_id')->default(false);
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('route')->nullable();
+            $table->string('icon')->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_deleted')->default(false);
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('modules');
     }
 };

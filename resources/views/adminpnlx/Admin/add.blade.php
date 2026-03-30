@@ -9,10 +9,10 @@
 					</li>
 
 					<li class="breadcrumb-item">
-						<a href="{{ Route('Category.index') }}">Category</a>
+						<a href="{{ Route($modelName .'.index') }}">{{$sectionName}}</a>
 					</li>
 					<li class="breadcrumb-item active">
-						Add Category
+						Add {{$sectionName}}
 					</li>
 				</ol>
 			</nav>
@@ -30,26 +30,19 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
-						<form action="{{ Route('Category.store') }}" method="post" enctype="multipart/form-data">
+						<form action="{{ Route($modelName .'.store') }}" method="post" enctype="multipart/form-data">
 							@csrf()
 							<div class="card card-custom gutter-b example example-compact">
-								<!-- <div class="card-header">
-										<h3 class="card-title"> Category Information</h3>
-										<div class="card-toolbar">
-											<div class="example-tools justify-content-center">
-											</div>
-										</div>
-									</div> -->
 
 								<div class="card-body">
 									<div class="row">
-										<div class="col-lg-3 col-md-6 col-sm-12">
+										<div class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group">
-												<label class="name"> Category Name <span class="text-danger">*</span>
+												<label class="name"> Name <span class="text-danger">*</span>
 												</label>
 												<input type="text" name="name"
 													class="form-control @error('name') is-invalid @enderror"
-													placeholder="Category Name" value="{{ old('name') }}">
+													placeholder="Name" value="{{ old('name') }}">
 												@error('name')
 													<span class="invalid-feedback" role="alert">
 														<strong>{{ $message }}</strong>
@@ -57,12 +50,43 @@
 												@enderror
 											</div>
 										</div>
+
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="email"> Email <span class="text-danger">*</span>
+												</label>
+												<input type="text" name="email"
+													class="form-control @error('email') is-invalid @enderror"
+													placeholder="Email" value="{{ old('email') }}">
+												@error('email')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="form-group">
+												<label class="password"> Password <span class="text-danger">*</span>
+												</label>
+												<input type="text" name="password"
+													class="form-control @error('password') is-invalid @enderror"
+													placeholder="Password" value="{{ old('password') }}">
+												@error('password')
+													<span class="invalid-feedback" role="alert">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+										</div>
+
 										<div class="col-lg-12 col-md-12 col-sm-12">
 											<div class="form-group">
 												<label class="status">Description </label>
 												<textarea name="description"
 													class="form-control @error('description') is-invalid @enderror"
-													placeholder="Category Description" value="{{ old('description') }}"
+													placeholder="Description" value="{{ old('description') }}"
 													rows="3"></textarea>
 											</div>
 										</div>

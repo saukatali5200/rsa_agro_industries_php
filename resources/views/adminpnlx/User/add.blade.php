@@ -36,7 +36,7 @@
 
 								<div class="card-body">
 									<div class="row">
-										<div class="col-lg-3 col-md-6 col-sm-12">
+										<div class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="name"> Name <span class="text-danger">*</span>
 												</label>
@@ -51,7 +51,7 @@
 											</div>
 										</div>
 
-										<div class="col-lg-3 col-md-6 col-sm-12">
+										<div class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="email"> Email <span class="text-danger">*</span>
 												</label>
@@ -66,7 +66,7 @@
 											</div>
 										</div>
 
-										<div class="col-lg-3 col-md-6 col-sm-12">
+										<div class="col-lg-4 col-md-6 col-sm-12">
 											<div class="form-group">
 												<label class="password"> Password <span class="text-danger">*</span>
 												</label>

@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Adminpnlx;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\AdminPermission;
+use App\Models\Module;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
-class AdminController extends Controller
+class RoleController extends Controller
 {
 
-    public $modelName = "Admin";
-    public $sectionName = "Staff";
+    public $modelName = "Role";
+    public $sectionName = "Role";
     public function __construct(){
         View::share('modelName', $this->modelName);
         View::share('sectionName', $this->sectionName);
@@ -74,6 +76,19 @@ class AdminController extends Controller
                 </span>
             </a>';
 
+            $action .= '<a href="' . route($this->modelName .'.assign', $result->id) . '" class="btn btn-sm btn-clean btn-icon" title="Assign Permission">
+                <span class="svg-icon svg-icon-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect id="bound" x="0" y="0" width="24" height="24"/>
+                            <rect id="Rectangle-2" fill="#000000" opacity="0.3" x="5" y="15" width="14" height="2" rx="1"/>
+                            <path d="M6.5,15 C7.88071187,15 9,13.8807119 9,12.5 C9,11.1192881 7.88071187,10 6.5,10 C5.11928813,10 4,11.1192881 4,12.5 C4,13.8807119 5.11928813,15 6.5,15 Z M6.5,17 C4.01471863,17 2,14.9852814 2,12.5 C2,10.0147186 4.01471863,8 6.5,8 C8.98528137,8 11,10.0147186 11,12.5 C11,14.9852814 8.98528137,17 6.5,17 Z" id="Oval-Copy" fill="#000000" fill-rule="nonzero"/>
+                            <path d="M17.5,15 C18.8807119,15 20,13.8807119 20,12.5 C20,11.1192881 18.8807119,10 17.5,10 C16.1192881,10 15,11.1192881 15,12.5 C15,13.8807119 16.1192881,15 17.5,15 Z M17.5,17 C15.0147186,17 13,14.9852814 13,12.5 C13,10.0147186 15.0147186,8 17.5,8 C19.9852814,8 22,10.0147186 22,12.5 C22,14.9852814 19.9852814,17 17.5,17 Z" id="Oval" fill="#000000" fill-rule="nonzero"/>
+                        </g>
+                    </svg>
+                </span>
+            </a>';
+
             $data[] = [
                 'id' => $sno++,
                 'name' => e($result->name),
@@ -93,16 +108,16 @@ class AdminController extends Controller
     private function resultDataModal($request, $limit, $start, $order, $dir, $search)
     {
         $name = $request->name ?? '';
-        $query = Admin::where('admins.is_deleted', 0);
+        $query = Role::where('roles.is_deleted', 0);
 
         if (!empty($name)) {
-            $query->where('admins.name', $name);
+            $query->where('roles.name', $name);
         }
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('categories.name', 'LIKE', "%{$search}%")
-                    ->orWhere('admins.name', 'LIKE', "%{$search}%");
+                $q->where('roles.name', 'LIKE', "%{$search}%")
+                    ->orWhere('roles.name', 'LIKE', "%{$search}%");
             });
         }
 
@@ -140,10 +155,8 @@ class AdminController extends Controller
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         } else {
-            $obj = new Admin();
+            $obj = new Role();
             $obj->name = $request->input('name');
-            $obj->email = $request->input('email');
-            $obj->password = $request->input('password');
             $obj->description = $request->input('description');
             $obj->save();
             return redirect()->route($this->modelName . '.index')->with('success', $this->sectionName .' Added Successfully.');
@@ -153,14 +166,14 @@ class AdminController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $modalDetail = Admin::where('id', $id)->first();
+        $modalDetail = Role::where('id', $id)->first();
         return view('adminpnlx.' . $this->modelName . '.edit', compact('modalDetail'));
     }
 
     public function update(Request $request, $id)
     {
         $formData = $request->all();
-        $modelDetail = Admin::where('id', $id)->first();
+        $modelDetail = Role::where('id', $id)->first();
 
         $validator = Validator::make(
             $request->all(),
@@ -176,8 +189,6 @@ class AdminController extends Controller
 
             $obj = $modelDetail;
             $obj->name = $request->input('name');
-            $obj->email = $request->input('email');
-            $obj->password = $request->input('password');
             $obj->description = $request->input('description');
             $obj->save();
 
@@ -189,11 +200,11 @@ class AdminController extends Controller
     public function delete(Request $request)
     {
         $id = $request->input('id');
-        $modelDetail = Admin::find($id);
+        $modelDetail = Role::find($id);
         if (!$modelDetail) {
             return response()->json([
                 'status' => false,
-                'message' => 'Admin not found'
+                'message' => 'Record not found'
             ], 404);
         }
         $modelDetail->delete();
@@ -201,6 +212,44 @@ class AdminController extends Controller
             'status' => true,
             'message' => $this->sectionName .' Deleted successfully'
         ]);
+    }
+
+    public function assign(Request $request, $id)
+    {
+        $modalDetail = Role::where('id', $id)->first();
+        $module_lists = Module::get();
+        return view('adminpnlx.' . $this->modelName . '.assign', compact('modalDetail', 'module_lists'));
+    }
+
+    public function assignPermission(Request $request)
+    {
+        $request->validate([
+            'role_id' => 'required',
+            'permissions' => 'required|array'
+        ]);
+
+        $roleId = $request->role_id;
+
+        AdminPermission::where('role_id', $roleId)->delete();
+
+        foreach ($request->permissions as $permission) {
+
+            $obj = new AdminPermission();
+            $obj->role_id = $roleId;
+            $obj->module_id = $permission['module_id'];
+
+            $obj->permission_list   = isset($permission['list']) ? 1 : 0;
+            $obj->permission_view   = isset($permission['view']) ? 1 : 0;
+            $obj->permission_create = isset($permission['create']) ? 1 : 0;
+            $obj->permission_update = isset($permission['update']) ? 1 : 0;
+            $obj->permission_delete = isset($permission['delete']) ? 1 : 0;
+            $obj->permission_other  = isset($permission['other']) ? 1 : 0;
+
+            $obj->save();
+        }
+
+        return redirect()->route($this->modelName . '.index')
+            ->with('success', $this->sectionName . ' Permissions Updated Successfully.');
     }
 
 }

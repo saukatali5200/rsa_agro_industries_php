@@ -33,6 +33,13 @@
                         <span class="menu-text" style="">Staff</span>
                     </a>
                 </li>
+
+                <li class="menu-item " aria-haspopup="true">
+                    <a href="{{ Route('Role.index') }}" class="menu-link ">
+                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                        <span class="menu-text" style="">Role</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </li>
