@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('parent_id')->default(false);
+            $table->unsignedBigInteger('parent_id')->default(0);
             $table->string('name');
             $table->string('route')->nullable();
             $table->string('icon')->nullable();

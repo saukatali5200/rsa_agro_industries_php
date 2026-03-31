@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Adminpnlx;
 use App\Http\Controllers\Controller;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -76,6 +77,8 @@ class ModuleController extends Controller
             $data[] = [
                 'id' => $sno++,
                 'name' => e($result->name),
+                'parent_id' => e($result->parent_name),
+                'route' => e($result->route),
                 'created_at' => date('d-m-Y', strtotime($result->created_at)),
                 'action' => $action
             ];
@@ -92,7 +95,9 @@ class ModuleController extends Controller
     private function resultDataModal($request, $limit, $start, $order, $dir, $search)
     {
         $name = $request->name ?? '';
-        $query = Module::where('modules.is_deleted', 0);
+         $query = DB::table('modules')->select('modules.*', 'c_modules.name as parent_name')
+         ->leftjoin('modules as c_modules', 'c_modules.parent_id', 'modules.id')
+        ->where('modules.parent_id', 0)->where('modules.is_deleted', 0);
 
         if (!empty($name)) {
             $query->where('modules.name', $name);
@@ -100,13 +105,13 @@ class ModuleController extends Controller
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('categories.name', 'LIKE', "%{$search}%")
-                    ->orWhere('modules.name', 'LIKE', "%{$search}%");
+                $q->where('modules.name', 'LIKE', "%{$search}%")
+                    ->orWhere('modules.route', 'LIKE', "%{$search}%");
             });
         }
 
         $totalData = (clone $query)->count();
-        $query->orderBy($order, $dir);
+        // $query->orderBy($order, $dir);
 
         // Apply pagination
         if ($limit != -1) {
@@ -142,7 +147,7 @@ class ModuleController extends Controller
             return Redirect::back()->withErrors($validator)->withInput();
         } else {
             $obj = new Module();
-            $obj->parent_id = $request->input('parent_id');
+            $obj->parent_id = $request->input('parent_id') ?? 0;
             $obj->name = $request->input('name');
             $obj->route = $request->input('route');
             $obj->icon = $request->input('icon');

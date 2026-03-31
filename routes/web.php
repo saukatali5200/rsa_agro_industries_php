@@ -2,6 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'index'])->name('Front.index');
+Route::get('/home', [App\Http\Controllers\Frontend\HomeController::class, 'index'])->name('Front.home');
+Route::get('/features', [App\Http\Controllers\Frontend\HomeController::class, 'features'])->name('Front.features');
+Route::get('/innovations', [App\Http\Controllers\Frontend\HomeController::class, 'innovations'])->name('Front.innovations');
+Route::get('/architecture', [App\Http\Controllers\Frontend\HomeController::class, 'architecture'])->name('Front.architecture');
+Route::get('/benchmarks', [App\Http\Controllers\Frontend\HomeController::class, 'benchmarks'])->name('Front.benchmarks');
+Route::get('/contact', [App\Http\Controllers\Frontend\HomeController::class, 'contact'])->name('Front.contact');
+Route::get('/careers', [App\Http\Controllers\Frontend\HomeController::class, 'careers'])->name('Front.careers');
+Route::get('/faq', [App\Http\Controllers\Frontend\HomeController::class, 'faq'])->name('Front.faq');
+Route::get('/privacy', [App\Http\Controllers\Frontend\HomeController::class, 'privacy'])->name('Front.privacy');
+Route::get('/terms', [App\Http\Controllers\Frontend\HomeController::class, 'terms'])->name('Front.terms');
+
+
 Route::prefix('adminpnlx')->group(function () {
     Route::get('login', [App\Http\Controllers\Adminpnlx\AuthController::class, 'login'])->name('Admin.login');
     Route::post('logins', [App\Http\Controllers\Adminpnlx\AuthController::class, 'logins'])->name('Admin.logins');

@@ -63,7 +63,9 @@
 								<thead>
 									<tr class="fw-semibold fs-6 text-muted">
 										<th>ID</th>
+										<th>Parent Name</th>
 										<th>Name</th>
+										<th>Url</th>
 										<th>Created</th>
 										<th>Action</th>
 									</tr>
@@ -71,7 +73,9 @@
 								<tfoot>
 									<tr>
 										<th>ID</th>
+										<th>Parent Name</th>
 										<th>Name</th>
+										<th>Url</th>
 										<th>Created</th>
 										<th>Action</th>
 									</tr>
@@ -112,7 +116,9 @@
 			},
 			columns: [
 				{ data: 'id', name: 'id' },
+				{ data: 'parent_id', name: 'parent_id' },
 				{ data: 'name', name: 'name' },
+				{ data: 'route', name: 'route' },
 				{ data: 'created_at', name: 'created_at' },
 				{ data: 'action', name: 'action' },
 			]

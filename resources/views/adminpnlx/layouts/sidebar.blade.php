@@ -1,6 +1,6 @@
 <ul class="menu-nav">
     <li class="menu-item" aria-haspopup="true">
-        <a href="{{ Route('Admin.Dashboard') }}" class="menu-link">
+        <a href="{{url('admin/dashboard')}}" class="menu-link">
             <span class="svg-icon menu-icon">
 
             </span>
@@ -21,23 +21,16 @@
             <ul class="menu-subnav">
 
                 <li class="menu-item " aria-haspopup="true">
-                    <a href="{{ Route('User.index') }}" class="menu-link ">
+                    <a href="{{url('admin/group')}}" class="menu-link ">
                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
                         <span class="menu-text" style="">User</span>
                     </a>
                 </li>
 
                 <li class="menu-item " aria-haspopup="true">
-                    <a href="{{ Route('Admin.index') }}" class="menu-link ">
+                    <a href="{{url('admin/group/add')}}" class="menu-link ">
                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
                         <span class="menu-text" style="">Staff</span>
-                    </a>
-                </li>
-
-                <li class="menu-item " aria-haspopup="true">
-                    <a href="{{ Route('Role.index') }}" class="menu-link ">
-                        <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                        <span class="menu-text" style="">Role</span>
                     </a>
                 </li>
             </ul>

@@ -229,27 +229,21 @@ class RoleController extends Controller
         ]);
 
         $roleId = $request->role_id;
-
         AdminPermission::where('role_id', $roleId)->delete();
-
         foreach ($request->permissions as $permission) {
 
             $obj = new AdminPermission();
             $obj->role_id = $roleId;
-            $obj->module_id = $permission['module_id'];
-
+            $obj->module_id         = $permission['module_id'];
             $obj->permission_list   = isset($permission['list']) ? 1 : 0;
             $obj->permission_view   = isset($permission['view']) ? 1 : 0;
             $obj->permission_create = isset($permission['create']) ? 1 : 0;
             $obj->permission_update = isset($permission['update']) ? 1 : 0;
             $obj->permission_delete = isset($permission['delete']) ? 1 : 0;
             $obj->permission_other  = isset($permission['other']) ? 1 : 0;
-
             $obj->save();
         }
-
-        return redirect()->route($this->modelName . '.index')
-            ->with('success', $this->sectionName . ' Permissions Updated Successfully.');
+        return redirect()->route($this->modelName . '.index')->with('success', $this->sectionName . ' Permissions Updated Successfully.');
     }
 
 }
